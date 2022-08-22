@@ -23,6 +23,7 @@ class ConvBlock(nn.Module):
         activation: nn.Module = None,
     ):
         super().__init__()
+        
         self.conv = (
             nn.Conv2d(
                 in_channels,
@@ -33,13 +34,15 @@ class ConvBlock(nn.Module):
                 padding_mode="reflect",
             )
             if not up_sampling
-            else nn.ConvTranspose2d(
-                in_channels,
-                out_channels,
-                kernel_size,
-                stride,
-                padding,
-                output_padding,
+            else nn.Sequential(
+                nn.Upsample(scale_factor=stride, mode="bilinear"),
+                nn.Conv2d(
+                    in_channels,
+                    out_channels,
+                    kernel_size,
+                    padding=padding,
+                    padding_mode="reflect"
+                )
             )
         )
         self.norm = nn.InstanceNorm2d(out_channels, affine=True)
