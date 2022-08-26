@@ -1,4 +1,4 @@
-from train.main import main
+from stylization.main import main
 
 if __name__ == "__main__":
     main()
