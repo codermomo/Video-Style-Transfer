@@ -46,7 +46,7 @@ class Processor:
                 print("User interrupted explicitly, ending stylization ...")
                 break
         
-        if self.is_video:
+        if video_output:
             video_output.release()
         cv2.destroyAllWindows()
         print("Done!")
