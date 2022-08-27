@@ -10,8 +10,8 @@ from tqdm import tqdm
 
 from network.style_network import StylizingNetwork
 from network.loss_network import LossNetwork
-from dataset import get_style_image, ContentDataset
-import loss
+from .dataset import get_style_image, ContentDataset
+import train.loss as loss
 import utils
 import config as model_cfg
 
