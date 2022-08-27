@@ -18,7 +18,6 @@ class ConvBlock(nn.Module):
         stride,
         kernel_size=3,
         padding=1,
-        output_padding=1,
         up_sampling: bool = False,
         activation: nn.Module = None,
     ):

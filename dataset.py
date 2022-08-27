@@ -6,15 +6,13 @@ import torch
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-import config
 
-
-def get_style_image():
-    img = np.array(Image.open(config.STYLE_IMG_PATH).convert("RGB"))
+def get_style_image(img_path, img_size):
+    img = np.array(Image.open(img_path).convert("RGB"))
     transform = A.Compose(
         [
             A.CenterCrop(min(img.shape[:2]), min(img.shape[:2])),
-            A.Resize(config.IMG_SIZE, config.IMG_SIZE),
+            A.Resize(img_size, img_size),
             A.Normalize(
                 mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5], max_pixel_value=255
             ),  # [-1, 1]
@@ -26,9 +24,9 @@ def get_style_image():
 
 
 class ContentDataset(torch.utils.data.Dataset):
-    def __init__(self, root):
+    def __init__(self, root, img_size):
         self.root = root
-        self.image_size = config.IMG_SIZE
+        self.image_size = img_size
         self.frames = sorted(os.listdir(root))
 
     def __len__(self):
@@ -43,7 +41,7 @@ class ContentDataset(torch.utils.data.Dataset):
         transform = A.Compose(
             [
                 A.CenterCrop(min(frame_t.shape[:2]), min(frame_t.shape[:2])),
-                A.Resize(config.IMG_SIZE, config.IMG_SIZE),
+                A.Resize(self.image_size, self.image_size),
                 A.Normalize(
                     mean=[0.5, 0.5, 0.5],
                     std=[0.5, 0.5, 0.5],

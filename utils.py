@@ -9,25 +9,25 @@ import config
 
 
 # https://thomasdougherty.ai/pytorch-video-style-transfer/
-def get_constant_noise():
+def get_constant_noise(img_size, noise_count, noise_range):
     noise_frame = np.zeros(
-        (config.IMG_CHANNELS, config.IMG_SIZE, config.IMG_SIZE),
+        (config.IMG_CHANNELS, img_size, img_size),
         dtype=np.float32,
     )
 
-    for _ in range(config.NOISE_COUNT):
+    for _ in range(noise_count):
         x, y = (
-            random.randrange(config.IMG_SIZE),
-            random.randrange(config.IMG_SIZE),
+            random.randrange(img_size),
+            random.randrange(img_size),
         )
         noise_frame[0][x][y] += random.uniform(
-            -config.NOISE_RANGE, config.NOISE_RANGE
+            -noise_range, noise_range
         )
         noise_frame[1][x][y] += random.uniform(
-            -config.NOISE_RANGE, config.NOISE_RANGE
+            -noise_range, noise_range
         )
         noise_frame[2][x][y] += random.uniform(
-            -config.NOISE_RANGE, config.NOISE_RANGE
+            -noise_range, noise_range
         )
 
     return noise_frame
@@ -42,9 +42,9 @@ def save_checkpoint(model, optimizer, filename="my_checkpoint.pth.tar"):
     torch.save(checkpoint, filename)
 
 
-def load_checkpoint(checkpoint_file, model, optimizer, lr):
+def load_checkpoint(checkpoint_file, model, optimizer, lr, device):
     print("=> Loading checkpoint ...")
-    checkpoint = torch.load(checkpoint_file, map_location=config.DEVICE)
+    checkpoint = torch.load(checkpoint_file, map_location=device)
     model.load_state_dict(checkpoint["state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer"])
 
