@@ -9,6 +9,16 @@ from .content_source.content_source_factory import ContentSourceFactory
 from .processor import Processor
 
 def prepare_args():
+
+    def str2bool(choice):
+        true_list = ["yes", "true", "1", "y", "t"]
+        false_list = ["no", "false", "0", "n", "f"]
+        if choice.lower() in true_list:
+            return True
+        elif choice.lower() in false_list:
+            return False
+        raise ValueError(f"Expecting value to be one of {str(true_list + false_list)}, but received {choice}")
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--content_type", type=ContentSourceChoice, choices=list(ContentSourceChoice), required=True)
     parser.add_argument("--source", type=str, required=True)
@@ -17,8 +27,8 @@ def prepare_args():
     parser.add_argument("--model_path", type=str, required=True)
     parser.add_argument("--output_dir", type=str, default="stylized_output")
     parser.add_argument("--output_name", type=str, default="output")
-    parser.add_argument("--real_time", type=bool, default=True)
-    parser.add_argument("--save_output", type=bool, default=True)
+    parser.add_argument("--real_time", type=str2bool, default=True)
+    parser.add_argument("--save_output", type=str2bool, default=True)
     args = parser.parse_args()
     
     kwargs = {
