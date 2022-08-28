@@ -32,10 +32,10 @@ def gram_matrix(x_feature):
     return G.div(a * b * c * d)
 
 
-def style_loss(style_features, output_features, L2):
+def style_loss(style_features, output_features, L2, device):
     num_layers = style_features.shape[1]
-    style_matrices = gram_matrix(style_features).to(torch.float16)
-    output_matrices = gram_matrix(output_features).to(torch.float16)
+    style_matrices = gram_matrix(style_features).to(torch.float16 if device == "cuda" else torch.float32)
+    output_matrices = gram_matrix(output_features).to(torch.float16 if device == "cuda" else torch.float32)
     return (
         torch.stack(
             [

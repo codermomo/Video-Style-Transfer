@@ -7,4 +7,5 @@ output/*
 stylized_output/*
 training_models/*
 training_output/*
+venv/*
 __pycache__

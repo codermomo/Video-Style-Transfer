@@ -48,6 +48,8 @@ class Processor:
         
         if video_output:
             video_output.release()
+        elif self.save_output and not self.is_video:
+            os.rename(os.path.join(self.output_dir, "frame_0.jpg"), os.path.join(self.output_dir, f"{self.output_name}.jpg"))
         cv2.destroyAllWindows()
         print("Done!")
 
