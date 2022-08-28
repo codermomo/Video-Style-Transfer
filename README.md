@@ -1,5 +1,6 @@
 # 🎨 Video Style Transfer
 This is an implementation of **single-style-per-model, real-time style transfer** in PyTorch.
+![](resource/cutie.gif)
 
 ## 📖 Table of Contents
 1. [Usage](#💻-usage)
@@ -9,7 +10,7 @@ This is an implementation of **single-style-per-model, real-time style transfer*
 
 ## 💻 Usage
 ### Video Stylization
-![](resource/cutie.mp4)
+![](resource/train.gif)
 
 ### Real-time Video Stylization
 Please stay tuned!
