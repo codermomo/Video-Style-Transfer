@@ -2,6 +2,7 @@ import os
 
 import cv2
 from torchvision.utils import save_image
+import keyboard
 
 from network.style_network import StylizingNetwork
 import utils
@@ -20,6 +21,8 @@ class Processor:
 
         self.quit_key = "q"
         self.delay = 1
+        self.quit = False
+        keyboard.add_hotkey(self.quit_key, self.on_quit_key_pressed)
     
     def stylize(self, contents, fps: int, size: tuple):
         self.style_network.eval()
@@ -42,10 +45,9 @@ class Processor:
             if self.show_real_time:
                 self.show(output)
             
-            if self.on_quit_key_pressed():
+            if cv2.waitKey(self.delay) & 0xFF == ord(self.quit_key) or self.quit:
                 print("User interrupted explicitly, ending stylization ...")
                 break
-        
         if video_output:
             video_output.release()
         elif self.save_output and not self.is_video:
@@ -54,7 +56,7 @@ class Processor:
         print("Done!")
 
     def on_quit_key_pressed(self):
-        return cv2.waitKey(self.delay) & 0xFF == ord(self.quit_key)
+        self.quit = True
     
     def show(self, output):
         cv2.imshow("Stylized Output", output)
