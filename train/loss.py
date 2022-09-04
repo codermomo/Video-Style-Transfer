@@ -61,7 +61,7 @@ def regularizer(output_imgs, L2):
 
 # substitute for replacing optical flow in temporal loss
 # main idea is to suppress noise in different frames
-# https://thomasdougherty.ai/pytorch-video-style-transfer/
+# https://arxiv.org/abs/1604.08610
 def noise_loss(output_imgs, noisy_input_output_imgs, L2):
     return torch.stack(
         [

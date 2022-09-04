@@ -210,4 +210,6 @@ There are 4 variants trained, with a difference of 'how strong the style is'. Th
 Please stay tuned!
 
 ## 🎓 Acknowledgments
-Please stay tuned!
+- [Fast Style Transfer](https://arxiv.org/abs/1603.08155)
+- [Temporal Loss by Optical Flow](https://openaccess.thecvf.com/content_cvpr_2017/papers/Huang_Real-Time_Neural_Style_CVPR_2017_paper.pdf)
+- [Temporal Loss by Random Noise](https://arxiv.org/abs/1604.08610)
