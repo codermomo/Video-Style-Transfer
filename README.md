@@ -10,13 +10,22 @@ This is an implementation of **single-style-per-model, real-time style transfer*
 
 ## 💻 Usage
 ### Video Stylization
-![](resource/train_trim.gif)
+#### Video File
+<div style="text-align:center">
 
-### Real-time Video Stylization
-Please stay tuned!
+![](resource/train_trim.gif)
+*A train arriving the station in the mosaic style*
+</div>
+
+#### Reak-time Video
+*The author is too shy to reveal himself, but it does work ><*
 
 ### Image Stylization
+<div style="text-align:center">
+
 ![](resource/admiralty.jpg)
+*A random group photo in the mosaic style*
+</div>
 
 ## 🗻 Background
 ### Neural Style Transfer
@@ -106,6 +115,7 @@ python train.py \
 --img_size 256 \
 --content_dir data/content/frames \
 --style_path data/style/<style image file> \
+--model_dir training_models \
 --model_name <model name>.pth.tar \
 --load_model False \
 --save_model True \
@@ -124,7 +134,30 @@ python train.py \
 ```
 
 #### Parameters
-Please stay tuned!
+| Parameter          | Type      | Description/ Options                                                                                                                |
+| :----------------- | :-------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| `device`           | `string`  | Optional. Either `cuda` or `cpu`.                                                                                                   |
+| `num_workers`      | `integer` | Optional. Number of subprocess used in data loading.                                                                                |
+| `batch_size`       | `integer` | Optional. Batch size in each epoch.                                                                                                 |
+| `img_size`         | `integer` | Optional. The standardized image size for training.                                                                                 |
+| `content_dir`      | `string`  | Required. The directory storing the content images.                                                                                 |
+| `style_path`       | `string`  | Required. The path of the style image.                                                                                              |
+| `model_dir`        | `string`  | Optional. The directory storing stylizing models.                                                                                   |
+| `model_name`       | `string`  | Required. The name of the model to be trained.                                                                                      |
+| `load_model`       | `boolean` | Optional. It will load the previouly trained model weights by default.                                                              |
+| `save_model`       | `boolean` | Optional. It will save the model to be trained by default.                                                                          |
+| `save_freq`        | `integer` | Optional. It will store the image generated every 300 batches by default.                                                           |
+| `train_output_dir` | `string`  | Optional. The directory for storing images generated.                                                                               |
+| `loss_net_choice`  | `string`  | Required. Either `VGG16` or `VGG19`.                                                                                                |
+| `loss_net_path`    | `string`  | Required. The path where the loss network is located at.                                                                            |
+| `epochs`           | `integer` | Optional. The number of training epochs.                                                                                            |
+| `lr`               | `float`   | Optional. The learning rate.                                                                                                        |
+| `lambda_content`   | `float`   | Optional. The weighting applied to content loss.                                                                                    |
+| `lambda_style`     | `float`   | Optional. The weighting applied to style loss.                                                                                      |
+| `lambda_regu`      | `float`   | Optional. The weighting applied to regularization.                                                                                  |
+| `lambda_noise`     | `float`   | Optional. The weighting applied to noise loss.                                                                                      |
+| `noise_per_img`    | `integer` | Optional. The number of iterations of adding noise to a random pixel in the content image.                                          |
+| `noise_range`      | `integer` | Optional. The maximum noise value added to a random pixel. Note that the final pixel will be clipped. It should be within [0, 255]. |
 
 ### Stylization
 #### Command
@@ -142,6 +175,22 @@ python stylize.py \
 ```
 
 #### Parameters
+| Parameter      | Type      | Description/ Options                                              |
+| :------------- | :-------- | :---------------------------------------------------------------- |
+| `content_type` | `string`  | Required. Either `video`, `webcam`, or `image`.                   |
+| `source`       | `string`  | Required. The path of the content source.                         |
+| `device`       | `string`  | Optional. Either `cuda` or `cpu`.                                 |
+| `max_size`     | `integer` | Optional. The maximum length for any side of the stylized output. |
+| `model_path`   | `string`  | Required. The path of the stylizing model.                        |
+| `output_dir`   | `string`  | Optional. The directory of the stylized output.                   |
+| `output_name`  | `string`  | Optional. The file name of the stylized output.                   |
+| `real_time`    | `boolean` | Optional. It will show the video output in real time by default.  |
+| `save_output`  | `boolean` | Optional. It will save the stylized output by default.            |
+
+## ✈ Trained models
+Please stay tuned!
+
+## 🧪 Other Examples
 Please stay tuned!
 
 ## 🎓 Acknowledgments
