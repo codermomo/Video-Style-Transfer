@@ -10,8 +10,8 @@ from tqdm import tqdm
 
 from network.style_network import StylizingNetwork
 from network.loss_network import LossNetwork
-from dataset import get_style_image, ContentDataset
-import loss
+from .dataset import get_style_image, ContentDataset
+import train.loss as loss
 import utils
 import config as model_cfg
 
@@ -76,8 +76,61 @@ def train_one_epoch(
     loop = tqdm(dataloader)
 
     for idx, frame in enumerate(loop):
+        
+        if config["device"] == "cuda":
+            with torch.cuda.amp.autocast():
+                noisy_frame = frame + constant_noise
+                noisy_frame.clamp_(min=-1, max=1)
+                frame = frame.to(config["device"])
+                noisy_frame = noisy_frame.to(config["device"])
 
-        with torch.cuda.amp.autocast():
+                output = style(frame).clamp(min=-1, max=1).to(config["device"])
+                noisy_output = (
+                    style(noisy_frame).clamp(min=-1, max=1).to(config["device"])
+                )
+                content_features = loss_network(frame.detach() * 0.5 + 0.5)
+                style_features = loss_network(style_img.detach() * 0.5 + 0.5)
+                output_features = loss_network(output * 0.5 + 0.5)
+
+                # calculate losses
+                content_loss = loss.content_loss(
+                    content_features[
+                        config["loss_net_config"]["model_map"][
+                            config["loss_net_config"]["content_layer"]
+                        ]
+                    ],
+                    output_features[
+                        config["loss_net_config"]["model_map"][
+                            config["loss_net_config"]["content_layer"]
+                        ]
+                    ],
+                    L2,
+                )
+                style_loss = torch.stack(
+                    [
+                        loss.style_loss(
+                            style_features[layer],
+                            output_features[layer],
+                            L2,
+                            config["device"],
+                        )
+                        for layer in config["loss_net_config"]["model_map"].values()
+                    ]
+                ).sum()
+                regularizer = loss.regularizer(output, L2)
+                noise_loss = loss.noise_loss(output.detach(), noisy_output, L2)
+                total_loss = (
+                    config["lambda_content"] * content_loss
+                    + config["lambda_style"] * style_loss
+                    + config["lambda_regu"] * regularizer
+                    + config["lambda_noise"] * noise_loss
+                )
+
+            style_optim.zero_grad()
+            scaler.scale(total_loss).backward()
+            scaler.step(style_optim)
+            scaler.update()
+        else:
             noisy_frame = frame + constant_noise
             noisy_frame.clamp_(min=-1, max=1)
             frame = frame.to(config["device"])
@@ -111,6 +164,7 @@ def train_one_epoch(
                         style_features[layer],
                         output_features[layer],
                         L2,
+                        config["device"],
                     )
                     for layer in config["loss_net_config"]["model_map"].values()
                 ]
@@ -123,11 +177,9 @@ def train_one_epoch(
                 + config["lambda_regu"] * regularizer
                 + config["lambda_noise"] * noise_loss
             )
-
-        style_optim.zero_grad()
-        scaler.scale(total_loss).backward()
-        scaler.step(style_optim)
-        scaler.update()
+            style_optim.zero_grad()
+            total_loss.backward()
+            style_optim.step()
 
         loop.set_postfix(
             content_loss=float(content_loss),

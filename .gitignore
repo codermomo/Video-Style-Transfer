@@ -3,4 +3,9 @@ data/style/*
 data/validation/*
 pretrained_models/*
 trained_models/*
+output/*
+stylized_output/*
+training_models/*
+training_output/*
+venv/*
 __pycache__
