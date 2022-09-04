@@ -26,12 +26,6 @@ This is an implementation of **single-style-per-model, real-time style transfer*
 ### Neural Style Transfer
 Image/ Video stylization is a technique in the realm of **non-photorealistic rendering (NPR)** which stylizes an input content image/ video with a desired style. With the emerge of deep learning, a new class of algorithm, **neural style transfer (NST)**, has been introduced to tackle the problem by utilizing artificial neural networks. There are mainly two approaches in NST, **optimization-based style transfer** and **feed-forward style transfer**. While the optimization-based approach requires tons of iterations for a single transfer, the feed-forward method makes avail of learned parameters to perform non-linear transformation on content image in only one iteration. The later one, therefore, enables fast generation of stylized contents and makes real-time style transfer possible. It can be further classified into three subcategories: **single style per model, multiple style per model, and arbitrary style per model**. In this project, we place the emphasis on the single-style-per-model style transfer.
 
-### Architecture
-Please stay tuned!
-
-### Loss Functions
-Please stay tuned!
-
 ## 🎈 Getting Started
 ### Prerequisite
 1. Create and activate a virtual environment:
