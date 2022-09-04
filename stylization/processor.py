@@ -32,15 +32,14 @@ class Processor:
             else None
         )
 
+        tensor_output = None
         print(f"Press '{self.quit_key}' to terminate the stylization process ...")
         for idx, content in enumerate(contents):
             tensor_output = self.style_network(content).detach()
             output = utils.tensor2cvimage(tensor_output)
 
-            if self.save_output:
-                self.save_image(tensor_output, os.path.join(self.output_dir, f"frame_{idx}.jpg"))
-                if self.is_video:
-                    video_output.write(output)
+            if self.save_output and self.is_video:
+                video_output.write(output)
             
             if self.show_real_time:
                 self.show(output)
@@ -51,7 +50,7 @@ class Processor:
         if video_output:
             video_output.release()
         elif self.save_output and not self.is_video:
-            os.rename(os.path.join(self.output_dir, "frame_0.jpg"), os.path.join(self.output_dir, f"{self.output_name}.jpg"))
+            self.save_image(tensor_output, os.path.join(self.output_dir, f"{self.output_name}.jpg"))
         cv2.destroyAllWindows()
         print("Done!")
 
