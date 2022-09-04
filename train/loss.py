@@ -1,8 +1,6 @@
-from timeit import default_timer as timer
 import functools
 
 import torch
-import torch.nn as nn
 
 
 def content_loss(content_features, output_features, L2):
@@ -71,27 +69,3 @@ def noise_loss(output_imgs, noisy_input_output_imgs, L2):
             )
         ]
     ).sum()
-
-
-if __name__ == "__main__":
-    start = timer()
-
-    L2 = nn.MSELoss()
-    N, C, H, W = 7, 40, 128, 128
-    t1, t2 = torch.rand((N, C, H, W)), torch.rand((N, C, H, W))
-    print("input shape:", t1.shape)
-
-    g_matrix = gram_matrix(t1)
-    print("gram matrix shape:", g_matrix.shape)
-
-    c_loss = content_loss(t1, t2, L2)
-    s_loss = style_loss(t1, t2, L2)
-    reg = regularizer(t1, L2)
-    n_loss = noise_loss(t1, t2, L2)
-    print("content loss shape:", c_loss.shape)
-    print("style loss shape:", s_loss.shape)
-    print("regularizer shape:", reg.shape)
-    print("noise loss:", n_loss.shape)
-
-    end = timer()
-    print("time elapsed:", end - start)
