@@ -5,3 +5,4 @@ albumentations
 torchvision
 tqdm
 opencv-python
+keyboard

@@ -121,15 +121,3 @@ class StylizingNetwork(nn.Module):
         for block in self.down_blocks + self.res_blocks + self.up_blocks:
             x = block(x)
         return self.final_block(x)
-
-
-def test():
-    img_channels = 3
-    img_size = 512
-    x = torch.randn((7, img_channels, img_size, img_size))
-    gen = StylizingNetwork()
-    print(gen(x).shape)
-
-
-if __name__ == "__main__":
-    test()

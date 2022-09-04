@@ -7,35 +7,24 @@ This is an implementation of **single-style-per-model, real-time style transfer*
 2. [Background](#🗻-background)
 3. [Getting Started](#🎈-getting-started)
 4. [Acknowledgments](#🎓-acknowledgments)
-
+5. [Trained Models](#✈-trained-models)
+5. [More Examples](#🧪-more-examples)
 ## 💻 Usage
 ### Video Stylization
 #### Video File
-<div style="text-align:center">
-
 ![](resource/train_trim.gif)
 *A train arriving the station in the mosaic style*
-</div>
 
 #### Reak-time Video
 *The author is too shy to reveal himself, but it does work ><*
 
 ### Image Stylization
-<div style="text-align:center">
-
 ![](resource/admiralty.jpg)
 *A random group photo in the mosaic style*
-</div>
 
 ## 🗻 Background
 ### Neural Style Transfer
 Image/ Video stylization is a technique in the realm of **non-photorealistic rendering (NPR)** which stylizes an input content image/ video with a desired style. With the emerge of deep learning, a new class of algorithm, **neural style transfer (NST)**, has been introduced to tackle the problem by utilizing artificial neural networks. There are mainly two approaches in NST, **optimization-based style transfer** and **feed-forward style transfer**. While the optimization-based approach requires tons of iterations for a single transfer, the feed-forward method makes avail of learned parameters to perform non-linear transformation on content image in only one iteration. The later one, therefore, enables fast generation of stylized contents and makes real-time style transfer possible. It can be further classified into three subcategories: **single style per model, multiple style per model, and arbitrary style per model**. In this project, we place the emphasis on the single-style-per-model style transfer.
-
-### Architecture
-Please stay tuned!
-
-### Loss Functions
-Please stay tuned!
 
 ## 🎈 Getting Started
 ### Prerequisite
@@ -178,7 +167,7 @@ python stylize.py \
 | Parameter      | Type      | Description/ Options                                              |
 | :------------- | :-------- | :---------------------------------------------------------------- |
 | `content_type` | `string`  | Required. Either `video`, `webcam`, or `image`.                   |
-| `source`       | `string`  | Required. The path of the content source.                         |
+| `source`       | `string`  | Required. The path of the content source. Use `0` for `webcam`.   |
 | `device`       | `string`  | Optional. Either `cuda` or `cpu`.                                 |
 | `max_size`     | `integer` | Optional. The maximum length for any side of the stylized output. |
 | `model_path`   | `string`  | Required. The path of the stylizing model.                        |
@@ -188,10 +177,33 @@ python stylize.py \
 | `save_output`  | `boolean` | Optional. It will save the stylized output by default.            |
 
 ## ✈ Trained models
-Please stay tuned!
+The following models are trained with a training dataset of around `6,800 frames` extracted from `16 videos`, of themes such as city, nature, marine, sports, public transports. By default, the learning rate, image size, and batch size are `2.5e-4`, `256`, and `1`. VGG16 is picked as the loss network, using `ReLU1_2`, `ReLU2_2`, `ReLU3_3`, `ReLU4_3` for computing style loss and `ReLU2_2` for content loss. Note that the weightings picked in each epoch vary, instead of using consistent weightings throughout all epochs, easing the hyperparameter tuning process.
 
-## 🧪 Other Examples
+### [**Mosaic**](https://drive.google.com/file/d/1dc1NJESOLwg_XN8sd25HfLHLh3wUJyzS/view?usp=sharing)
+Training details:
+| Epoch | lambda_content | lambda_style | lambda_regu | lambda_noise |
+| :---- | :------------- | :----------- | :---------- | :----------- |
+| `1`   | `50000`        | `25`         | `1e-3`      | `1e-2`       |
+| `2`   | `25000`        | `25`         | `1e-3`      | `1e-2`       |
+| `3`   | `5000`         | `25`         | `1e-3`      | `1e-2`       |
+
+### The Starry Night
+Training details:
+| Epoch | lambda_content | lambda_style | lambda_regu | lambda_noise |
+| :---- | :------------- | :----------- | :---------- | :----------- |
+| `1`   | `10`           | `100`        | `1e-2`      | `1e-5`       |
+| `2`   | `500`          | `5`          | `1e-2`      | `1e-2`       |
+
+There are 4 variants trained, with a difference of 'how strong the style is'. They are trained by using only a portion of training dataset in the second epoch.  
+[**Protostar**](https://drive.google.com/file/d/134XOD3_ivRY1LfReus-c9MVHbUuyj4YE/view?usp=sharing) - The style is weakest, `6000 images` are used in the second epoch.  
+[**Star**](https://drive.google.com/file/d/1oeercfONinJuQA3Ve_3zIowFHURxEVxi/view?usp=sharing) - The style is moderate, `4800 images` are used in the second epoch.  
+[**Supernova**](https://drive.google.com/file/d/1_SW4fw1qHl8xFNTlTPUonIagq9I0Fypw/view?usp=sharing) - The style is strong, `3600 images` are used in the second epoch.  
+[**Black Hole**](https://drive.google.com/file/d/1QGQ5QktTBsIDkFZ1Ui7YqwPsgRRWnT74/view?usp=sharing) - The style is very strong, `2400 images` are used in the second epoch.  
+
+## 🧪 More Examples
 Please stay tuned!
 
 ## 🎓 Acknowledgments
-Please stay tuned!
+- [Fast Style Transfer](https://arxiv.org/abs/1603.08155)
+- [Temporal Loss by Optical Flow](https://openaccess.thecvf.com/content_cvpr_2017/papers/Huang_Real-Time_Neural_Style_CVPR_2017_paper.pdf)
+- [Temporal Loss by Random Noise](https://arxiv.org/abs/1604.08610)
