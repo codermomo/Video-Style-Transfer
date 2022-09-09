@@ -15,7 +15,7 @@ This is an implementation of **single-style-per-model, real-time style transfer*
 ![](resource/train_trim.gif)
 *A train arriving the station in the mosaic style*
 
-#### Reak-time Video
+#### Real-time Video
 *The author is too shy to reveal himself, but it does work ><*
 
 ### Image Stylization
